@@ -1,17 +1,18 @@
-// next.config.js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // ⚠️ MUY IMPORTANTE: necesitamos un server en Vercel (no "export" estático)
-  output: "standalone",
+  output: 'standalone',
+
   experimental: {
-    // opcional, pero útil si usás Server Actions
-    serverActions: { bodySizeLimit: "2mb" },
+    serverActions: false,
   },
-  // evita que la build falle por warnings de Tipos/ESLint en producción
-  typescript: { ignoreBuildErrors: false },
-  eslint: { ignoreDuringBuilds: true },
+
+  // ✅ Forzamos que TODAS las páginas se sirvan dinámicamente
+  generateStaticParams: async () => [],
+  dynamicParams: true,
+
+  // ✅ Desactiva static export para evitar prerender
+  images: { unoptimized: true },
 };
 
 module.exports = nextConfig;
-

@@ -1,9 +1,9 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 
-function AcceptInviteInner() {
+export default function AcceptInviteClient() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const router = useRouter();
@@ -32,13 +32,5 @@ function AcceptInviteInner() {
         <p className="text-lg">{status}</p>
       </div>
     </main>
-  );
-}
-
-export default function AcceptInvitePage() {
-  return (
-    <Suspense fallback={null}>
-      <AcceptInviteInner />
-    </Suspense>
   );
 }

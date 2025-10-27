@@ -1,5 +1,6 @@
-﻿"use client";
-import { Suspense, useEffect, useState, useMemo } from "react";
+﻿// app/projects/ProjectsClient.jsx
+"use client";
+import { useEffect, useState, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import Header from "@/app/components/Header";
@@ -7,7 +8,7 @@ import CreateProjectModal from "@/app/components/CreateProjectModal";
 import ProjectCard from "@/app/components/ProjectCard";
 import BuyCreditsModal from "@/app/components/BuyCreditsModal";
 
-function ProjectsPageInner() {
+export default function ProjectsClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -55,6 +56,7 @@ function ProjectsPageInner() {
   useEffect(() => {
     loadProjects();
     loadCredits();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -123,13 +125,5 @@ function ProjectsPageInner() {
         </div>
       )}
     </div>
-  );
-}
-
-export default function ProjectsPage() {
-  return (
-    <Suspense fallback={null}>
-      <ProjectsPageInner />
-    </Suspense>
   );
 }
