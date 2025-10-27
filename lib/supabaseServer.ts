@@ -1,11 +1,16 @@
 // lib/supabaseServer.ts
-import { createClient } from "@supabase/supabase-js";
+import 'server-only';
+import { createClient } from '@supabase/supabase-js';
 
-// Variables de entorno (definilas en .env.local o en Vercel)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseUrl = process.env.SUPABASE_URL!;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-// ⚡ Cliente de Supabase con privilegios de servidor
-export const supabaseServer = createClient(supabaseUrl, serviceRoleKey, {
-  auth: { persistSession: false },
-});
+if (!supabaseUrl) throw new Error('supabaseUrl is required.');
+if (!serviceRoleKey) throw new Error('supabaseKey is required.');
+
+export function getSupabaseServer() {
+  return createClient(supabaseUrl, serviceRoleKey, {
+    auth: { persistSession: false }, // no sesiones en server
+    global: { headers: { 'x-ft-runtime': 'server' } },
+  });
+}

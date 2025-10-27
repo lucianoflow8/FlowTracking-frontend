@@ -1,33 +1,31 @@
 "use client";
+export const dynamic = "force-dynamic";
+
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
-export default function AcceptInvitePage() {
+function AcceptInviteInner() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const router = useRouter();
   const [status, setStatus] = useState("Verificando invitación...");
 
   useEffect(() => {
-    const acceptInvite = async () => {
+    (async () => {
       if (!token) {
         setStatus("❌ Token inválido o inexistente");
         return;
       }
-
-      const { data, error } = await supabase.rpc("accept_project_invite", { _token: token });
-
+      const { error } = await supabase.rpc("accept_project_invite", { _token: token });
       if (error) {
         setStatus(`❌ Error: ${error.message}`);
       } else {
-        setStatus("✅ Invitación aceptada correctamente. Redirigiendo...");
-        setTimeout(() => router.push("/projects"), 2500);
+        setStatus("✅ Invitación aceptada. Redirigiendo…");
+        setTimeout(() => router.push("/projects"), 2000);
       }
-    };
-
-    acceptInvite();
-  }, [token]);
+    })();
+  }, [token, router]);
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-[#0b0b0d] text-white">
@@ -39,5 +37,10 @@ export default function AcceptInvitePage() {
   );
 }
 
-
-
+export default function AcceptInvitePage() {
+  return (
+    <Suspense fallback={null}>
+      <AcceptInviteInner />
+    </Suspense>
+  );
+}
