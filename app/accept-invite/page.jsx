@@ -1,13 +1,9 @@
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
-import { Suspense } from "react";
-import AcceptInviteClient from "./AcceptInviteClient";
+import { redirect } from "next/navigation";
 
-export default function Page() {
-  return (
-    <Suspense fallback={<div>Verificando invitación…</div>}>
-      <AcceptInviteClient />
-    </Suspense>
-  );
+export default function Page({ searchParams }) {
+  const qs = new URLSearchParams(searchParams).toString();
+  redirect(`/accept-invite${qs ? `?${qs}` : ""}`);
 }
