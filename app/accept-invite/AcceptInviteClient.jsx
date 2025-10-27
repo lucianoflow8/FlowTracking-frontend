@@ -1,7 +1,4 @@
 "use client";
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
-
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";

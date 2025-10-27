@@ -1,14 +1,14 @@
-﻿// app/projects/page.jsx
+// app/accept-invite/page.jsx
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
 import { Suspense } from "react";
-import ProjectsClient from "./ProjectsClient";
+import AcceptInviteClient from "./AcceptInviteClient";
 
 export default function Page() {
   return (
-    <Suspense fallback={<div>Cargando proyectos…</div>}>
-      <ProjectsClient />
+    <Suspense fallback={<div>Verificando invitación…</div>}>
+      <AcceptInviteClient />
     </Suspense>
   );
 }
