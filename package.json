@@ -19,6 +19,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.52.0",
     "recharts": "^3.2.1",
+    "resend": "^6.2.2",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
