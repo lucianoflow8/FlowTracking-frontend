@@ -11,8 +11,8 @@ const RE = {
 };
 
 const BANK_TOKENS = [
-  'Mercado Pago', 'MercadoPago', 'Ualá', 'Uala', 'BBVA', 'Galicia', 'Santander',
-  'Macro', 'Provincia', 'HSBC', 'ICBC', 'Brubank', 'Rebanking', 'Naranja X',
+  'Mercado Pago','MercadoPago','Ualá','Uala','BBVA','Galicia','Santander',
+  'Macro','Provincia','HSBC','ICBC','Brubank','Rebanking','Naranja X',
 ];
 
 function normalizeAmountMatch(s: string) {
@@ -25,6 +25,10 @@ function normalizeAmountMatch(s: string) {
   const n = Number(clean);
   return Number.isFinite(n) ? Math.round(n) : null;
 }
+
+// 🔒 Helper: castea de forma segura el iterador de matchAll
+const toMatches = (it: IterableIterator<RegExpMatchArray>) =>
+  Array.from(it) as RegExpMatchArray[];
 
 export type ParsedReceipt = {
   amount?: number | null;
@@ -42,11 +46,13 @@ export type ParsedReceipt = {
 };
 
 export async function ocrAndParse(buffer: Buffer): Promise<ParsedReceipt> {
+  // Import dinámico (solo server)
   const sharpMod = await import('sharp');
   const sharp = (sharpMod as any).default ?? sharpMod;
   const tesseractMod = await import('tesseract.js');
   const Tesseract = (tesseractMod as any).default ?? tesseractMod;
 
+  // Preprocesado
   const pre = await sharp(buffer)
     .rotate()
     .resize(1600, null, { withoutEnlargement: true })
@@ -54,24 +60,29 @@ export async function ocrAndParse(buffer: Buffer): Promise<ParsedReceipt> {
     .normalise()
     .toBuffer();
 
+  // OCR español
   const { data } = await (Tesseract as any).recognize(pre, 'spa', {
-    // @ts-ignore
+    // @ts-ignore (la clave existe en runtime)
     tessedit_pageseg_mode: 6,
   });
 
   const text = (data?.text || '').replace(/\s+\n/g, '\n').trim();
 
-  // 🟩 FIX: tipamos explícitamente m como RegExpMatchArray
+  // —— Parsing ——
+  // Monto (tomar el mayor candidato)
   let amount: number | null = null;
-  const allAmounts = Array.from(text.matchAll(RE.AMOUNT))
-    .map((m: RegExpMatchArray) => normalizeAmountMatch(m[0]))
+  const allAmounts = toMatches(text.matchAll(RE.AMOUNT))
+    .map((m) => normalizeAmountMatch(m[0]))
     .filter(Boolean) as number[];
   if (allAmounts.length) amount = allAmounts.sort((a, b) => b - a)[0] ?? null;
 
   const op = text.match(RE.OP_NO);
   const ref = text.match(RE.REF);
-  const cuits = Array.from(text.matchAll(RE.CUIT)).map((m) => m[0]);
-  const cuentas = Array.from(text.matchAll(RE.CBU_CVU)).map((m) => m[0]);
+
+  // 🟩 FIX TS: tipamos las coincidencias de CUIT/CBU
+  const cuits = toMatches(text.matchAll(RE.CUIT)).map((m) => m[0]);
+  const cuentas = toMatches(text.matchAll(RE.CBU_CVU)).map((m) => m[0]);
+
   const bankFound =
     BANK_TOKENS.find((b) => text.toLowerCase().includes(b.toLowerCase())) || null;
 
