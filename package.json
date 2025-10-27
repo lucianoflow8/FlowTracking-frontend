@@ -20,6 +20,8 @@
     "react-hook-form": "^7.52.0",
     "recharts": "^3.2.1",
     "resend": "^6.2.2",
+    "sharp": "^0.34.4",
+    "tesseract.js": "^6.0.1",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
