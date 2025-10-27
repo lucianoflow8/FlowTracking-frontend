@@ -1,3 +1,7 @@
+// app/projects/[id]/page.js
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -52,7 +56,7 @@ export default function ProjectDetail({ params }) {
         ].map((c) => (
           <Link
             key={c.href}
-            href={`/projects/${id}/${c.href}`} // ✅ corregido (sin /app)
+            href={`/projects/${id}/${c.href}`}
             className="rounded-lg border border-white/10 bg-white/5 px-4 py-6 hover:bg-white/10 transition"
           >
             <div className="text-lg font-medium">{c.title}</div>
