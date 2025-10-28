@@ -1,7 +1,6 @@
 // app/api/wa/route.js
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 import { NextResponse } from "next/server";
@@ -80,7 +79,7 @@ export async function GET(req) {
     const tag = ` #p:${slug}`;
     const finalText = baseText.includes("#p:") ? baseText : `${baseText}${tag}`;
 
-    // 4️⃣ Registrar click en analytics_whatsapp_clicks (best-effort)
+    // 4️⃣ Registrar click
     try {
       await admin.from("analytics_whatsapp_clicks").insert([
         {
