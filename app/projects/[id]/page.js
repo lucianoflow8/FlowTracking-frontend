@@ -1,7 +1,3 @@
-// app/projects/[id]/page.js
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -31,15 +27,8 @@ export default function ProjectDetail({ params }) {
     load();
   }, [id]);
 
-  if (error)
-    return (
-      <div className="p-6 text-red-400">
-        Error cargando el proyecto: {error}
-      </div>
-    );
-
-  if (!project)
-    return <div className="p-6 text-white/60">Cargando proyecto…</div>;
+  if (error) return <div className="p-6 text-red-400">Error cargando el proyecto: {error}</div>;
+  if (!project) return <div className="p-6 text-white/60">Cargando proyecto…</div>;
 
   return (
     <div className="p-6 space-y-4">
