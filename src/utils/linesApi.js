@@ -1,4 +1,4 @@
-// frontend/src/utils/linesApi.js
+// src/utils/linesApi.js
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -39,4 +39,3 @@ export async function listLines(projectId) {
   if (!res.ok) throw new Error(data?.message || `List lines failed (${res.status})`);
   return data;
 }
-
