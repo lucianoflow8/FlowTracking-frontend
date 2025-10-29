@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'standalone',
+  output: "standalone",
 
   experimental: {
-    serverActions: false,
+    serverActions: {}, // ✅ debe ser objeto, no boolean
   },
 
   // ✅ Forzamos que TODAS las páginas se sirvan dinámicamente
