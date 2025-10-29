@@ -1,6 +1,6 @@
 "use client";
 
-import { listLines as apiListLines, createLine as apiCreateLine } from "@/utils/linesApi"; // Asegúrate de que esté en src/utils/linesApi.js
+import { listLines as apiListLines, createLine as apiCreateLine } from "@/utils/linesApi.js";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
