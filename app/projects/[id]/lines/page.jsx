@@ -411,10 +411,3 @@ export default function LinesPage() {
               value={createName}
               onChange={(e) => setCreateName(e.target.value)}
             />
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                onClick={() => {
-                  setCreateOpen(false);
-                  setCreateName("");
-                }}
-                className="rounded-md border border-white/15 bg-white/5 px-3 py-
